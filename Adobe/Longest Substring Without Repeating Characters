@@ -1,0 +1,61 @@
+https://leetcode.com/problems/longest-substring-without-repeating-characters/
+
+**************************************************SOLUTION******************************************
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) 
+    {
+        int size = s.length();
+        if(size == 0 || size == 1)
+            return size;
+       
+        vector<int> ascii(256 , -1);
+        int maxLen = INT_MIN;
+        
+        int i = 0;
+        int start = 0;
+        int current_length = 0;
+        
+        while(i < size)
+        {
+            int last_index_ch = ascii[s[i]];
+            if(last_index_ch == -1)
+            {
+                //element just occured so count it
+                ascii[s[i]] = i;
+            }
+            else
+            {
+                if(last_index_ch >= start)
+                {
+                    //the element has already occured so don't count
+                    current_length = i - start;
+                    if(maxLen < current_length)
+                        maxLen = current_length;
+                    start = last_index_ch + 1;
+                    ascii[s[i]] = i;
+                    
+                }
+                else
+                {
+                    //take the character
+                     ascii[s[i]] = i;
+                }
+                
+            }
+            i++;
+        }
+        current_length = i - start;
+        if(maxLen < current_length)
+            maxLen = current_length;
+        
+        //sorting the vector to get the longest substring length
+        return maxLen;
+    
+    }
+};
+
+
+TC = O(N)
+SC = 0(N)
