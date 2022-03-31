@@ -1,0 +1,41 @@
+https://leetcode.com/problems/unique-email-addresses/submissions/
+
+********************************************SOLUTION***************************
+
+class Solution {
+public:
+    int numUniqueEmails(vector<string>& emails) 
+    {
+        unordered_set<string> frq;
+        for(int i = 0; i < emails.size(); i++)
+        {
+            //extracting email from the vector
+            string email = emails[i];
+            //extracting local name
+            string local = email.substr(0 , email.find('@'));
+            //extracting domain name
+            string domain = email.substr(email.find('@'));
+            
+            // ignoring all things after '+' sign.  
+            //s.find('+') returns the first occurance of '+' so ignoring it .
+            local = local.substr(0 , email.find('+'));
+            
+            //ignoring '.'
+            int k = 0;
+            string temp;
+            while(k < local.length())
+            {
+                if(local[k] != '.')
+                    temp+=local[k];
+                k++;
+            }
+            
+            //generating the fresh email after applying the rules
+            email = temp + "@" + domain;
+            frq.insert(email);
+            
+        }
+        
+        return frq.size();
+    }
+};
