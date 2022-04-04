@@ -1,0 +1,65 @@
+https://leetcode.com/problems/reverse-linked-list-ii/
+***********************************SOLUTION***********************************
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseBetween(ListNode* head, int left, int right) 
+    {
+        ListNode* dummy = new ListNode(-1);
+        dummy->next = head;
+        ListNode* temp = head;
+        ListNode* prev_left = NULL;
+        int pos = 1;
+        while(temp != NULL && pos != left)
+        {
+            temp = temp->next;
+            pos++;
+        }
+        if(temp != NULL && pos == left)
+        {
+            prev_left = temp;
+            
+        }
+        
+        vector<int> rev;
+        ListNode* prev_right = NULL;
+        while(temp != NULL && pos != right)
+        {
+            rev.push_back(temp->val);
+            temp = temp->next;
+            pos++;
+        }
+        if(temp != NULL && pos == right)
+        {
+            rev.push_back(temp->val);
+            prev_right = temp;
+            
+        }
+        
+        //reversing the vector
+        reverse(rev.begin(),rev.end());
+        int k = 0;
+        while(prev_left != NULL && prev_right != NULL && prev_left != prev_right)
+        {
+            prev_left->val = rev[k];
+            k++;
+            prev_left = prev_left->next;
+        }
+        if(prev_left == prev_right)
+        {
+            prev_left->val = rev[k];
+        }
+        
+        return dummy->next;
+    }
+};
