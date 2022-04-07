@@ -1,0 +1,44 @@
+https://leetcode.com/problems/two-sum/
+
+*****************************************SOLUTION*********************************************
+
+
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) 
+    {
+        vector<int> result;
+        map<int, int> m;
+        
+        for(int i = 0; i < nums.size(); i++)
+        {
+            m[nums[i]]++;
+        }
+        
+        for(int i = 0; i < nums.size(); i++)
+        {
+            m[nums[i]]--;
+            int required = target - nums[i];
+            int index;
+            if(m.count(required) > 0)
+            {
+                //pair found
+                result.push_back(i);
+                
+                for(int j = i + 1; j < nums.size(); j++)
+                {
+                    if(required == nums[j])
+                    {
+                        index = j;
+                        break;
+                    }
+                        
+                }
+                
+                result.push_back(index);
+                break;
+            }
+        }
+        return result;
+    }
+};
