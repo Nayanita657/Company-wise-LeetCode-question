@@ -1,0 +1,55 @@
+https://leetcode.com/problems/merge-intervals/
+
+*************************************SOLUTION***************************************
+
+class Solution {
+public:
+    static bool compare(vector<int>& a, vector<int>& b)
+    {
+       return a[0] < b[0];
+    }
+
+    vector<vector<int>> merge(vector<vector<int>>& intervals) 
+    {
+        //sorting the intervals before getting started
+        sort(intervals.begin(), intervals.end(), compare);
+        
+        
+        vector<vector<int>> result;
+        //inserting the first inner vector into result;
+        vector<int> result_inner;
+        result_inner.push_back(intervals[0][0]);
+        result_inner.push_back(intervals[0][1]);
+        result.push_back(result_inner);
+            
+        for(int i = 1; i < intervals.size(); i++)
+        {
+            int lower_li = intervals[i][0];
+            int upper_li = intervals[i][1];
+            
+            int size = result.size();
+            int result_lower = result[size - 1][0];
+            int result_upper = result[size - 1][1];
+            
+            if(lower_li == result_lower)
+            {
+                if(upper_li > result_upper)
+                    result[size - 1][1] = upper_li;
+            }
+            else if(lower_li <= result_upper)
+            {
+                if(upper_li > result_upper)
+                    result[size - 1][1] = upper_li;
+            }
+            else
+            {
+                //insert the new interval
+                vector<int> p;
+                p.push_back(lower_li);
+                p.push_back(upper_li);
+                result.push_back(p);
+            }
+        }
+        return result;
+    }
+};
