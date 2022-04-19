@@ -1,0 +1,59 @@
+https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
+
+************************************************SOLUTION*******************************************
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> preorder_temp;
+    TreeNode* helper(vector<int>& inorder, int inorder_start, int inorder_end)
+    {
+        if(inorder_start > inorder_end)
+        {
+            return NULL;
+        }
+        if(inorder_start == inorder_end)
+        {
+            TreeNode* root = new TreeNode(preorder_temp[0]);
+            preorder_temp.erase(preorder_temp.begin());
+            return root;
+        }
+        else
+        {
+            TreeNode* root = new TreeNode(preorder_temp[0]);
+            int root_node = preorder_temp[0];
+            preorder_temp.erase(preorder_temp.begin());
+            int index;
+            for(int i = inorder_start; i <= inorder_end; i++)
+            {
+                if(inorder[i] == root_node)
+                {
+                    index = i;
+                    break;
+                }
+            }
+            
+            root->left = helper(inorder, inorder_start, index - 1);
+            
+            root->right = helper(inorder, index + 1, inorder_end);
+            
+            return root;
+        }
+    }
+    
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) 
+    {
+        preorder_temp = preorder;
+        return helper(inorder, 0, inorder.size() - 1);   
+    }
+};
